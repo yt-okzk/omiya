@@ -1,4 +1,5 @@
 # Omiya
+[![Build Status](https://secure.travis-ci.org/yt-okzk/omiya.png)](http://travis-ci.org/yt-okzk/omiya)
 
 (wanna be) KVS stub suite for integration test
 
