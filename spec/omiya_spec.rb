@@ -29,17 +29,37 @@ describe Omiya do
   end
 
   describe '#get' do
+    before :each do
+      Omiya::Client.setup
+    end
+
+    let(:cli) { Omiya.client }
+
     it 'should raise NoBlockGivenException when block is not given' do
       expect { get('hoge') }.to raise_error Omiya::NoBlockGivenException
     end
 
     it 'should return a client which returns the value set' do
-      omiya = get 'hoge' do
+      get 'hoge' do
         'fuga'
       end
 
-      omiya.should be_an_instance_of(Omiya::Client)
-      omiya.get('hoge').should == 'fuga'
+      cli.get('hoge').should == 'fuga'
+    end
+
+    it 'should yield key' do
+      get 'hoge' do |key|
+        "#{key} fuga"
+      end
+
+      get /^hoge/ do |key|
+        key.size
+      end
+
+      cli.get('hoge').should     == 'hoge fuga'
+
+      cli.get('hogea').should    == 5
+      cli.get('hogefuga').should == 8
     end
   end
 end

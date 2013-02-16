@@ -8,16 +8,19 @@ module Omiya
     end
 
     def get(key)
-      return @@store[key] if @@store[key]
+      return @@store[key].call(key) if @@store[key]
 
       @@regexp.each do |regexp, value|
-        return value if regexp =~ key
+        return value.call(key) if regexp =~ key
       end
 
       nil
     end
 
     def set(key, value)
+      raise Exception.new('value must be Proc object') unless value.is_a?(Proc)
+      raise Exception.new('value must be Proc object, not lambda') if value.lambda?
+
       case key
       when String
         @@store[key]  = value

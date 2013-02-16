@@ -9,13 +9,13 @@ describe Omiya::Client do
     let(:cli) { Omiya::Client.new }
 
     it 'should return the value of the key which @@store is matched with' do
-      Omiya::Client.class_eval("@@store['hoge'] = :fuga")
+      Omiya::Client.class_eval("@@store['hoge'] = proc { :fuga }")
       cli.get('hoge').should == :fuga
     end
 
     it 'should return the value of the key which @@regexp is matched with' do
-      Omiya::Client.class_eval("@@store['hoge']   = :fuga")
-      Omiya::Client.class_eval('@@regexp[/^hoge/] = :bar')
+      Omiya::Client.class_eval("@@store['hoge']   = proc { :fuga }")
+      Omiya::Client.class_eval('@@regexp[/^hoge/] = proc { :bar }')
       cli.get('hoge').should         == :fuga
       cli.get('hogeeee').should      == :bar
       cli.get('fugahoge').should_not == :bar
@@ -31,7 +31,7 @@ describe Omiya::Client do
 
     context 'when key is String' do
       it 'should set to @@store' do
-        cli.set('hoge', :fuga)
+        cli.set('hoge', proc { :fuga })
 
         cli.get('hoge').should == :fuga
       end
@@ -39,7 +39,7 @@ describe Omiya::Client do
 
     context 'when key is Regexp' do
       it 'should set to @@regexp' do
-        cli.set(/^ho/, :fuga)
+        cli.set(/^ho/, proc { :fuga })
 
         cli.get('ho').should       == :fuga
         cli.get('hoge').should     == :fuga

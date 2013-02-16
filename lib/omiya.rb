@@ -17,10 +17,10 @@ module Omiya
     end
   end
 
-  def get(key)
-    raise Omiya::NoBlockGivenException.new unless block_given?
+  def get(key, &block)
+    raise Omiya::NoBlockGivenException.new if block.nil?
 
-    @@client.set(key, yield)
+    @@client.set(key, block)
   end
 
   setup
