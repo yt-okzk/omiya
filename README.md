@@ -1,6 +1,6 @@
 # Omiya
 
-TODO: Write a gem description
+(wanna be) KVS stub suite for integration test
 
 ## Installation
 
@@ -18,7 +18,42 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+get 'hoge' do
+  'fuga'
+end
+
+cli.get('hoge') # => 'fuga'
+```
+
+```ruby
+get /^hoge/ do
+  'hoge something'
+end
+
+cli.get('hoge')     # => 'hoge something'
+cli.get('hogehoge') # => 'hoge something'
+```
+
+```ruby
+get /^hoge/ do |key|
+  "#{key} value"
+end
+
+cli.get('hoge')     # => 'hoge value'
+cli.get('hogehoge') # => 'hogehoge value'
+```
+
+```ruby
+get /[a-z]+/ do |key|
+  sleep 10
+  'slow!'
+end
+
+get /.*/ do |key|
+  raise Exception.new('not defined!')
+end
+```
 
 ## Contributing
 
